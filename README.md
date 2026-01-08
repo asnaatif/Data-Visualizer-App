@@ -87,11 +87,13 @@ Clone the repositories and proceed with the following steps:
 ---
 
 ## Supported Files and Data Format
-Supported file types: .xlsx, .xls, .csv
-Best results when:
-The first row contains column headers
-Columns are consistent (numbers in numeric columns, categories in categorical columns)
-No merged header cells
+
+Supported file types are: .xlsx, .xls, .csv
+
+For best results:
+- Keep column headers in the first row
+- Columns are consistent (numbers in numeric columns, categories in categorical columns)
+- No merged header cells
 
 ## Project Structure
 ```bash
