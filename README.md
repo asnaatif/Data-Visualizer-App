@@ -6,63 +6,43 @@
 1. [Overview](#overview)
 2. [Key Features](#key-features)
 3. [Tech Stack](#tech-stack)
-4. [Architecture and WebSockets](#architecture-and-websockets)
-5. [Design](#design)
 6. [Manual Setup](#manual-setup)
-7. [Configuration](#configuration)  
+7. [Supported Files and Data Format](#supported-files-and-data-format)  
 8. [Project Structure](#project-structure)  
 
 ---
 
 ## Overview
-ConvoHub is a web-based platform designed for university students to collaborate within course-specific spaces. It allows students to share resources, communicate in real time, and provide feedback on courses and instructors, all within a centralized and structured environment.
+DVA accepts an Excel spreadsheet upload, parses the data, and generates interactive visualizations. It supports fast exploration of tabular datasets and helps users convert sheets into charts without manual chart building.
+
 
 ---
 
 ## Key Features
-- Course-based discussion groups  
-- Resource sharing and file attachments  
-- Instructor feedback and ratings  
-- Real-time chat using WebSockets (Django Channels)  
-- Public and private groups  
-- Student profiles with basic moderation tools  
-
+- Upload Excel files (.xlsx, .xls, .csv)
+- Auto-detect numeric and categorical columns
+- Generate interactive charts using:
+  - Plotly (quick analytics + rich interactivity)
+  - Highcharts (high-performance charting + advanced chart types)
+- Multiple chart types (based on data): line, bar, column, area, scatter, pie (if supported)
+- Data preview table before chart generation
+- Download/export charts (depends on configuration and library settings)
+- Basic validation and user-friendly error handling (missing columns, invalid sheet, empty data)
+- 
 ---
 
 ## Tech Stack
-- Frontend: React.js (Vite)  
-- Backend: Django + Django REST Framework  
-- Real-Time Communication: Django Channels, WebSockets  
-- Database: PostgreSQL  
-- Authentication: Django Authentication (token/session based)  
-- UI/Design: Figma  
-
+- Frontend: Web UI (supports Excel upload + chart rendering)
+- Plotly and Highcharts Charting Libraries
+- Excel Parsing
+- Flask backend
 ---
 
-## Architecture and WebSockets
-High-level architecture:
-- Frontend ↔ Backend: REST APIs for courses, posts, users, and resources  
-- Frontend ↔ Backend: WebSocket connections for real-time chat and presence updates  
-
-Django Channels is used on the backend to manage WebSocket connections, enabling real-time messaging alongside traditional HTTP-based APIs.
-
----
-## Design
-
-The interface for ConvoHub was planned and visualized in Figma
-to ensure clear user flows, layout consistency, and intuitive interactions prior to
-development.
-
-📄 **View the Figma design (PDF):**
-[Convohub Figma Design.pdf](Convohub%20Figma%20Design.pdf)
-
----
 ## Manual Setup
 
 ### Prerequisites
-- Python 3.10+ (3.12 recommended)  
+- Python
 - Node.js and npm  
-- PostgreSQL  
 - Git  
 
 Clone the repositories and proceed with the following steps:
@@ -70,52 +50,27 @@ Clone the repositories and proceed with the following steps:
 
 1. Navigate to the backend directory
 ```bash
-   cd convohubBackend
+   cd Data-Visualizer-App/Data Visualizer App Backend 
 ```
-2. Install Python (3.12 recommended)  
+2. Create and activate virtual environment  
 ```bash
-   brew install python@3.12
+   python3 -m venv venv
+   source venv/bin/activate
 ```
-3. Create and activate a virtual environment  
-```bash python3.12 -m venv env  
-   source env/bin/activate
-```
-
-4. Install backend dependencies  
+3. Install dependencies and flask modules
 ```bash
-   pip install -r requirements.txt
+   pip install flask flask-cors pandas openpyxl plotly
 ```
-5. Create the PostgreSQL database  
+4. Execute the file 
 ```bash
-   createdb convohub
-   psql -U postgres -c "CREATE DATABASE convohub;" //using psql
+   python app.py
 ```
-6. Import the database schema  
-```bash
-   psql -h localhost -p 5432 -U postgres -d convohub -f convohub.sql
-```
-7. Navigate into the backend project folder
-```bash
-   cd backend
-```
-8. Create and activate another virtual environment (if required)
-```bash
-   python3.12 -m venv env  
-   source env/bin/activate
-```
-9. Apply migrations and start the development server
-```bash
-   python manage.py makemigrations  
-   python manage.py migrate  
-   python manage.py runserver
-```
----
 
 ### Frontend Setup
 
 1. Navigate to the frontend directory
 ```bash 
-   cd ../convohubFrontend/ConvoHub
+   cd ../Data-Visualizer-App/Data Visualizer App Frontend/DVA
 ```
 2. Install frontend dependencies
 ```bash
@@ -131,25 +86,13 @@ Clone the repositories and proceed with the following steps:
 ```
 ---
 
-## Configuration 
-Create a .env file inside convohubBackend/ (or project root, depending on settings) with the following variables:
-
-DATABASE_URL=postgres://postgres:password@localhost:5432/convohub  
-SECRET_KEY=your_django_secret_key  
-DEBUG=True
-
-Ensure Django is configured to load environment variables correctly.
-
----
-
 ## Project Structure
 ```bash
-ConvoHub/
-├── convohubBackend/             # Django backend
+Data-Visualizer-App/
+├── Data Visualizer App Backend/ # Flask backend
 │   └── ...
-├── convohubFrontend/            # React frontend
-│   └── ...
-├── ConvoHub.png/                # ConvoHub Preview
-├── ConvoHub Figma Design.pdf/   # Figma design
+├── Data Visualizer App Frontend/ # React frontend
+│   └── DVA
+     └── ...
 ├── README.md
 ```
